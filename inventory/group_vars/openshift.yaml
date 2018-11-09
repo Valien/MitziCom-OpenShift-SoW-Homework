@@ -1,0 +1,70 @@
+[OSEv3:vars]
+
+###########################################################################
+### Ansible Vars
+###########################################################################
+timeout=60
+ansible_become=yes
+ansible_ssh_user=ec2-user
+
+###########################################################################
+### OpenShift Basic Vars
+###########################################################################
+openshift_deployment_type=openshift-enterprise
+deployment_type=openshift-enterprise
+containerized=false
+openshift_disable_check="memory_availability"
+
+# Default node selectors
+osm_default_node_selector='client=common'
+openshift_hosted_infra_selector="env=infra"
+
+###########################################################################
+### OpenShift Master Vars
+###########################################################################
+
+openshift_master_api_port=443
+openshift_master_console_port=443
+
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=????
+openshift_master_cluster_public_hostname=????
+openshift_master_default_subdomain=????
+#openshift_master_ca_certificate={'certfile': '/root/intermediate_ca.crt', 'keyfile': '/root/intermediate_ca.key'}
+openshift_master_overwrite_named_certificates=True
+
+# Set this line to enable NFS
+openshift_enable_unsupported_configurations=True
+
+###########################################################################
+### OpenShift Network Vars
+###########################################################################
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+
+###########################################################################
+### OpenShift Authentication Vars
+###########################################################################
+
+# HTPASSWD Authentication
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+
+# HTPASSWD Dependencies
+openshift_master_htpasswd_file=/files/htpasswd.openshift
+
+###########################################################################
+### OpenShift Router and Registry Vars
+###########################################################################
+
+###########################################################################
+### OpenShift Service Catalog Vars
+###########################################################################
+
+###########################################################################
+### OpenShift Metrics and Logging Vars
+###########################################################################
+
+###########################################################################
+### OpenShift Prometheus Vars
+###########################################################################
+
