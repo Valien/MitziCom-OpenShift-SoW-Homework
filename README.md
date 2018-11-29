@@ -23,3 +23,8 @@ Export bastion guid:
 
 * `export GUID=`hostname | cut -d"." -f2`; echo "export GUID=$GUID" >> $HOME/.bashrc`
 * `echo GUID=$GUID`
+
+~~~
+
+1. `ansible-playbook install_galaxy.yml`
+2. `ansible-playbook -f 20 playbooks/install_openshift.yml`

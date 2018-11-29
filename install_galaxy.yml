@@ -2,5 +2,5 @@
 - name: Install Galaxy
   hosts: localhost
   tasks:
-    - name: Installing Galaxy...
-    shell: ansible-galaxy install -r casl-requirements.yml -p galaxy
+    - name: Installing casl-ansible galaxy prerequisites...
+      shell: ansible-galaxy install -r casl-requirements.yml -p galaxy

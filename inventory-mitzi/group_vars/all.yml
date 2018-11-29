@@ -1,0 +1,3 @@
+---
+docker_storage_block_device: '/dev/xvdb'
+docker_storage_mount_point: '/var/lib/containers/docker'
