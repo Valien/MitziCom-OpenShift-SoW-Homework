@@ -45,7 +45,12 @@
     - name: Get current GUID
       shell: hostname|awk -F. '{print $2}'
     - name: Set GUID on hosts file
-      shell: sed -i "s/GUID/$GUID/g" /etc/ansible/hosts
+      replace:
+        path: /etc/ansible/hosts
+        regexp: 'GUID'
+        replace: $GUID
+        backup: yes  
+      #shell: sed -i "s/GUID/$GUID/g" /etc/ansible/hosts
 
   
       
