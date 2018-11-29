@@ -49,7 +49,7 @@
       replace:
         path: /etc/ansible/hosts
         regexp: 'GUID'
-        replace: {{ guid.stdout}}
+        replace: guid.stdout
         backup: yes  
       #shell: sed -i "s/GUID/$GUID/g" /etc/ansible/hosts
 
