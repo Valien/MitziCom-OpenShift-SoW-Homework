@@ -8,9 +8,10 @@
 - name: Verify Docker is installed properly and running.
   hosts: nodes
   tasks:
-    systemd:
-      state: started
-      name: docker
+    - name: Docker service check
+      systemd:
+        state: started
+        name: docker
 
 - name: Verify NFS on support node.
   hosts: nfs
