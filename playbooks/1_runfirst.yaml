@@ -5,38 +5,50 @@
     - name: All GUID env variable
       shell: export GUID=`hostname | cut -d"." -f2`; echo "export GUID=$GUID" >> $HOME/.bashrc
 
-- name: Verify docker version
-  hosts: all
-  tasks:
-    - name: Show docker version
-      shell: "docker version | grep Version"
-
 - name: Verify Installation and Configuration of Docker
   hosts: nodes
   tasks:
     - name: docker restart
       shell: systemctl restart docker
 
-# - name: Verify NFS Shared Volumes on Hosts
-#   hosts: nfs
-#   tasks:
+- name: Verify NFS Shared Volumes on Hosts
+  hosts: nfs
+  tasks:
 
-# - name: Install packages and config auth
-#   hosts: localhost
-#   tasks:
-#     - name: required packages are present
-#       yum:
-#         name:
-#           - ????
-#           - ????
-#         state: present
+- name: Install packages and config auth
+  hosts: localhost
+  tasks:
+    - name: required packages are present
+      yum:
+        name:
+          - atomic-openshift-clients
+          - openshift-ansible
+        state: present
 
 # - name: Generate Inventory Hosts File
 #   hosts: localhost
 #   tasks:
 #     - name: Generate Inventory script
 #       script: /root/ocp_advanced_deployment_homework/scripts/generate_inventory.sh
+- name: Generate Inventory Hosts file
+  hosts: localhost
+  tasks:
+    - name: Move existing hosts file if it exists
+      shell: mv /etc/ansible/hosts /etc/ansible/hosts.bak
+    - name: Create new hosts file
+      copy:
+        src: ../files/hosts
+        dest: /etc/ansible/hosts
+        owner: root
+        group: root
+        mode: 0644
+    - name: Get current GUID
+      shell: hostname|awk -F. '{print $2}'
+    - name: Set GUID on hosts file
+      shell: sed -i "s/GUID/$GUID/g" /etc/ansible/hosts
 
+  
+      
 # - name: Execute the openshift-ansible prerequisites
 #   import_playbook: ???
 
@@ -52,7 +64,7 @@
 # - name: Post installation configuration
 #   hosts: localhost
 #   tasks:
-#     - name: make sure you are system:admin
+#     - name: make sure you are system:dmin
 #       shell: oc whoami | grep system:admin
 
 # - name: Create PVs for Users
@@ -89,3 +101,6 @@
 # - name: Assigning labels to the users according to its group
 
 # - name: Setup the environment for Alpha and Beta clients
+
+
+#   ....
