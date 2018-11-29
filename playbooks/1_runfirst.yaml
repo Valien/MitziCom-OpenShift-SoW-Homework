@@ -9,7 +9,7 @@
   hosts: all
   tasks:
     - name: Show docker version
-      shell: docker version | grep Version
+      shell: "docker version | grep Version"
 
 - name: Verify Installation and Configuration of Docker
   hosts: nodes

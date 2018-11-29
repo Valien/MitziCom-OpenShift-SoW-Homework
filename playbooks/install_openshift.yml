@@ -3,10 +3,10 @@
 # See openshift/end-to-end.yml for reference
 
 # Pre-Install Steps
-- import_playbook: pre-install.yml
+- import_playbook: openshift/pre-install.yml
 
 # Install
-- import_playbook: install.yml
+- import_playbook: openshift/install.yml
 
 # Post Install
-- import_playbook: post-install.yml
+- import_playbook: openshift/post-install.yml
