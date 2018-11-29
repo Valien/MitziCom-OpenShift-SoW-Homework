@@ -1,0 +1,256 @@
+---
+
+# The username Ansible should use to access the instances with
+ansible_user: ec2-user
+
+# Should Ansible use "become" to gain elevated privileges (i.e.: root)
+ansible_become: true
+
+# CNS relative vars - Uncommented to automatically deploy CNS - 'cns_deploy' from all.yml must be 'true' in that case
+# openshift_storage_glusterfs_namespace: glusterfs
+# openshift_storage_glusterfs_name: cns
+
+# Uncommented to automatically integrate OCP with AWS so EBS can be used as Dynamic Storage backend
+#openshift_cloudprovider_kind: aws
+#openshift_cloudprovider_aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+#openshift_cloudprovider_aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+#openshift_clusterid: "{{ env_id }}"
+hosting_infrastructure: 'byo'
+
+# OpenShift Specific Configuration Options
+# - Check the official OpenShift documentation for more details
+deployment_type: openshift-enterprise
+openshift_deployment_type: openshift-enterprise
+containerized: false
+openshift_disable_check: "disk_availability,memory_availability,docker_image_availability"
+
+### OCP version to install
+openshift_release: v3.11
+openshift_image_tag: v3.11.16
+openshift_pkg_version: -3.11.16
+openshift_version: v3.11.16
+
+osm_default_node_selector: 'node-role.kubernetes.io/compute: true'
+osm_use_cockpit: true
+osm_cockpit_plugins:
+- 'cockpit-kubernetes'
+
+openshift_install_examples: true
+
+# Enable the Multi-Tenant plugin
+#os_sdn_network_plugin_name: 'redhat/openshift-ovs-multitenant'
+# Enabling Network Policy plugin
+os_sdn_network_plugin_name: 'redhat/openshift-ovs-networkpolicy'
+osm_cluster_network_cidr: 10.1.0.0/16
+openshift_portal_net: 172.30.0.0/16
+
+# OpenShift FQDNs, DNS, App domain specific configurations
+openshift_master_api_port: 443
+openshift_master_console_port: 443
+
+openshift_master_cluster_method: native
+openshift_master_default_subdomain: "apps.{{ env_id }}.{{ dns_domain }}"
+openshift_master_cluster_hostname: "console.internal.{{ env_id }}.{{ dns_domain }}"
+openshift_master_cluster_public_hostname: "console.{{ env_id }}.{{ dns_domain }}"
+
+# Registry URL & Credentials
+# For more info: https://access.redhat.com/terms-based-registry/
+oreg_url: 'registry.redhat.io/openshift3/ose-${component}:${version}'
+#oreg_auth_user: "{{ lookup('env', 'OREG_AUTH_USER' )}}"
+#oreg_auth_password: "{{ lookup('env', 'OREG_AUTH_PASSWORD' )}}"
+
+# Deploy Logging with dynamic storage
+#openshift_logging_install_logging: false
+#openshift_logging_es_pvc_dynamic: true
+#openshift_logging_es_pvc_size: 40G
+#openshift_logging_curator_default_days: 1
+
+# Deploy Metrics with dynamic storage
+#openshift_metrics_install_metrics: false
+#openshift_metrics_cassandra_storage_type: dynamic
+#openshift_metrics_cassandra_pvc_size: 40G
+#openshift_metrics_duration: 2
+
+# HTPASSWD Identity Provider
+# - update to other types of auth providers if necessary (i.e: LDAP, OAuth, ...)
+openshift_master_identity_providers:
+ - 'name': 'htpasswd_auth'
+   'login': 'true'
+   'challenge': 'true'
+   'kind': 'HTPasswdPasswordIdentityProvider'
+
+# create admin/r3dh4t1! user
+openshift_master_htpasswd_users:
+  admin: admin:$apr1$PdURZKAb$rKYbsqX1gwFl3jbQNpxwd.
+
+# Uncommented to automatically create a set of test users with the above
+# HTPASSWD Identity Provider
+#create_users:
+#  num_users: 5
+#  prefix: 'rdu-user'
+#  passwd_file: '/etc/origin/master/htpasswd'
+#  password: 'rdu-sample'
+
+###########################################################################
+### OpenShift Metrics and Logging Vars
+###########################################################################
+
+#########################
+# Prometheus Metrics
+#########################
+
+openshift_hosted_prometheus_deploy: true
+#openshift_prometheus_namespace: openshift-metrics
+openshift_prometheus_node_selector: {"node-role.kubernetes.io/infra":"true"}
+openshift_cluster_monitoring_operator_install: true
+
+
+########################
+# Cluster Metrics
+########################
+
+openshift_metrics_install_metrics: true
+
+openshift_metrics_storage_kind: nfs
+openshift_metrics_storage_access_modes: ['ReadWriteOnce']
+openshift_metrics_storage_nfs_directory: /srv/nfs
+openshift_metrics_storage_nfs_options: '*(rw,root_squash)'
+openshift_metrics_storage_volume_name: metrics
+openshift_metrics_storage_volume_size: 2Gi
+openshift_metrics_storage_labels: {'storage': 'metrics'}
+#openshift_metrics_cassandra_pvc_storage_class_name: 
+
+
+openshift_metrics_hawkular_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+openshift_metrics_cassandra_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+openshift_metrics_heapster_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+
+# Store Metrics for 2 days
+openshift_metrics_duration: 2
+
+# Suggested Quotas and limits for Prometheus components:
+openshift_prometheus_memory_requests: 2Gi
+openshift_prometheus_cpu_requests: 750m
+openshift_prometheus_memory_limit: 2Gi
+openshift_prometheus_cpu_limit: 750m
+openshift_prometheus_alertmanager_memory_requests: 300Mi
+openshift_prometheus_alertmanager_cpu_requests: 200m
+openshift_prometheus_alertmanager_memory_limit: 300Mi
+openshift_prometheus_alertmanager_cpu_limit: 200m
+openshift_prometheus_alertbuffer_memory_requests: 300Mi
+openshift_prometheus_alertbuffer_cpu_requests: 200m
+openshift_prometheus_alertbuffer_memory_limit: 300Mi
+openshift_prometheus_alertbuffer_cpu_limit: 200m
+
+
+# Grafana
+openshift_grafana_node_selector: {"node-role.kubernetes.io/infra":"true"}
+openshift_grafana_storage_type: pvc
+openshift_grafana_pvc_size: 5Gi
+openshift_grafana_node_exporter: true
+
+########################
+# Cluster Logging
+########################
+
+openshift_logging_install_logging: true
+openshift_logging_install_eventrouter: true
+
+openshift_logging_storage_kind: nfs
+openshift_logging_storage_access_modes: ['ReadWriteOnce']
+openshift_logging_storage_nfs_directory: /srv/nfs
+openshift_logging_storage_nfs_options: '*(rw,root_squash)'
+openshift_logging_storage_volume_name: logging
+openshift_logging_storage_volume_size: 10Gi
+openshift_logging_storage_labels: {'storage': 'logging'}
+openshift_logging_es_pvc_storage_class_name: ''
+openshift_logging_es_memory_limit: 8Gi
+openshift_logging_es_cluster_size: 1
+openshift_logging_curator_default_days: 2
+
+openshift_logging_kibana_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+openshift_logging_curator_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+openshift_logging_es_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+openshift_logging_eventrouter_nodeselector: {"node-role.kubernetes.io/infra":"true"}
+
+###########################################################################
+### OpenShift Router and Registry Vars
+###########################################################################
+
+# default selectors for router and registry services
+openshift_router_selector: 'node-role.kubernetes.io/infra: true'
+openshift_registry_selector: 'node-role.kubernetes.io/infra: true'
+
+openshift_hosted_router_replicas: 2
+
+# openshift_hosted_router_certificate: {"certfile": "/path/to/router.crt", "keyfile": "/path/to/router.key", "cafile": "/path/to/router-ca.crt"}
+
+openshift_hosted_registry_replicas: 1
+openshift_hosted_registry_pullthrough: true
+openshift_hosted_registry_acceptschema2: true
+openshift_hosted_registry_enforcequota: true
+
+openshift_enable_unsupported_configurations: true
+
+openshift_hosted_registry_storage_kind: nfs
+openshift_hosted_registry_storage_access_modes: ['ReadWriteMany']
+openshift_hosted_registry_storage_nfs_directory: /srv/nfs
+openshift_hosted_registry_storage_nfs_options: '*(rw,root_squash)'
+openshift_hosted_registry_storage_volume_name: registry
+openshift_hosted_registry_storage_volume_size: 10Gi
+openshift_hosted_registry_storage_host: support1.$GUID.internal
+openshift_hosted_registry_selector: 'node-role.kubernetes.io/infra: true'
+
+###########################################################################
+### OpenShift Service Catalog Vars
+###########################################################################
+
+# default: true
+openshift_enable_service_catalog: true
+
+# default: true
+template_service_broker_install: true
+openshift_template_service_broker_namespaces: ['openshift']
+
+# default: true
+ansible_service_broker_install: true
+ansible_service_broker_local_registry_whitelist: ['.*-apb$']
+
+# OpenShift Node specific parameters
+openshift_node_groups:
+- name: node-config-master
+  labels:
+  - 'node-role.kubernetes.io/master: true'
+  edits:
+  - key: kubeletArguments.kube-reserved
+    value:
+    - 'cpu: {{ ansible_processor_vcpus * 50 }}m'
+    - 'memory: {{ ansible_processor_vcpus * 50 }}M'
+  - key: kubeletArguments.system-reserved
+    value:
+    - 'cpu: {{ ansible_processor_vcpus * 50 }}m'
+    - 'memory: {{ ansible_processor_vcpus * 100 }}M'
+- name: node-config-infra
+  labels:
+  - 'node-role.kubernetes.io/infra: true'
+  edits:
+  - key: kubeletArguments.kube-reserved
+    value:
+    - 'cpu: {{ ansible_processor_vcpus * 50 }}m'
+    - 'memory: {{ ansible_processor_vcpus * 50 }}M'
+  - key: kubeletArguments.system-reserved
+    value:
+    - 'cpu: {{ ansible_processor_vcpus * 50 }}m'
+    - 'memory: {{ ansible_processor_vcpus * 100 }}M'
+- name: node-config-compute
+  labels:
+  - 'node-role.kubernetes.io/compute: true'
+  edits:
+  - key: kubeletArguments.kube-reserved
+    value:
+    - 'cpu: {{ ansible_processor_vcpus * 50 }}m'
+    - 'memory: {{ ansible_processor_vcpus * 50 }}M'
+  - key: kubeletArguments.system-reserved
+    value:
+    - 'cpu: {{ ansible_processor_vcpus * 50 }}m'
+    - 'memory: {{ ansible_processor_vcpus * 100 }}M'
