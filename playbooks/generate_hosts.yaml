@@ -6,6 +6,9 @@
       stat: 
         path: /etc/ansible/hosts
       register: hosts_file
+    - name: File info
+      debug:
+        var: hosts_file
     - name: Move hosts file for backup
       shell: mv /etc/ansible/hosts /etc/ansible/hosts.bak
       when: hosts_file.exists
