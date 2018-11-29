@@ -8,28 +8,29 @@
     - name: All GUID env variable
       shell: export GUID=`hostname | cut -d"." -f2`; echo "export GUID=$GUID" >> $HOME/.bashrc
 
-- name: Verify Installation and Configuration of Docker
+- name: Verify Docker is installed properly and running.
   hosts: nodes
   tasks:
-    - name: docker restart
+    - name: Restarting Docker...
       shell: systemctl restart docker
 
-- name: Verify NFS Shared Volumes on Hosts
+- name: Verify NFS on support node.
   hosts: nfs
   tasks:
-    shell: exportfs
+    - name: Checking NFS...
+      shell: exportfs
 
-- name: Install packages and config auth
+- name: Verify openshift packages are installed.
   hosts: localhost
   tasks:
-    - name: required packages are present
+    - name: Checking for atomic-openshift-clients and openshift-ansible...
       yum:
         name:
           - atomic-openshift-clients
           - openshift-ansible
         state: present
        
-- name: Execute the openshift-ansible prerequisites
+- name: Execute the openshift-ansible prerequisites playbook
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
  #- name: Execute the openshift-ansible Deployer
