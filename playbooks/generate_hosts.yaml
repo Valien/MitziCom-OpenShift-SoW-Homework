@@ -11,7 +11,7 @@
         var: hosts_file
     - name: Move hosts file for backup
       shell: mv /etc/ansible/hosts /etc/ansible/hosts.bak
-      when: hosts_file.exists
+      when: hosts_file.stat.exists
     - name: Create new hosts file
       copy:
         src: ../files/hosts
@@ -30,5 +30,8 @@
         path: /etc/ansible/hosts
         regexp: 'GUID'
         replace: "{{ guid.stdout  }}"
-        backup: yes  
+        backup: yes
+    - name: Pausing for 5 seconds
+      pause:
+        seconds: 5
       
