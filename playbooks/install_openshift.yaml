@@ -1,6 +1,6 @@
 ---
 # Generate hosts file. 
-- import_playbook: /generate_hosts.yaml
+- import_playbook: generate_hosts.yaml
 
 - name: Prepare GUID environment variable across all hosts
   hosts: all
