@@ -3,7 +3,12 @@
   hosts: localhost
   tasks:
     - name: Move existing hosts file if it exists
+      stat: 
+        path: /etc/ansible/hosts
+      register: hosts_file
+    - name: Move hosts file for backup
       shell: mv /etc/ansible/hosts /etc/ansible/hosts.bak
+      when: hosts_file.exists
     - name: Create new hosts file
       copy:
         src: ../files/hosts
