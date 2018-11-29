@@ -1,4 +1,7 @@
 ---
+# Generate hosts file. 
+- import_playbook: /generate_hosts.yaml
+
 - name: Prepare GUID environment variable across all hosts
   hosts: all
   tasks:
@@ -14,6 +17,7 @@
 - name: Verify NFS Shared Volumes on Hosts
   hosts: nfs
   tasks:
+    shell: exportfs
 
 - name: Install packages and config auth
   hosts: localhost
@@ -24,42 +28,12 @@
           - atomic-openshift-clients
           - openshift-ansible
         state: present
+       
+- name: Execute the openshift-ansible prerequisites
+  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
-# # - name: Generate Inventory Hosts File
-# #   hosts: localhost
-# #   tasks:
-# #     - name: Generate Inventory script
-# #       script: /root/ocp_advanced_deployment_homework/scripts/generate_inventory.sh
-# - name: Generate Inventory Hosts file
-#   hosts: localhost
-#   tasks:
-#     - name: Move existing hosts file if it exists
-#       shell: mv /etc/ansible/hosts /etc/ansible/hosts.bak
-#     - name: Create new hosts file
-#       copy:
-#         src: ../files/hosts
-#         dest: /etc/ansible/hosts
-#         owner: root
-#         group: root
-#         mode: 0644
-#     - name: Get current GUID
-#       shell: hostname|awk -F. '{print $2}'
-#       register: guid
-#     - name: Set GUID on hosts file
-#       replace:
-#         path: /etc/ansible/hosts
-#         regexp: 'GUID'
-#         replace: guid.stdout
-#         backup: yes  
-#       #shell: sed -i "s/GUID/$GUID/g" /etc/ansible/hosts
-
-  
-      
-# - name: Execute the openshift-ansible prerequisites
-#   import_playbook: ???
-
-# - name: Execute the openshift-ansible Deployer
-#   import_playbook: ???
+ #- name: Execute the openshift-ansible Deployer
+ #  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 
 # - name: Verify OpenShift Cluster
 #   hosts: masters[0]
