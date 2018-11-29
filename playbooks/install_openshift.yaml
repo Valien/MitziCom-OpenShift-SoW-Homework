@@ -1,7 +1,4 @@
 ---
-# Generate hosts file. 
-- import_playbook: generate_hosts.yaml
-
 - name: Prepare GUID environment variable across all hosts
   hosts: all
   tasks:
@@ -11,8 +8,9 @@
 - name: Verify Docker is installed properly and running.
   hosts: nodes
   tasks:
-    - name: Restarting Docker...
-      shell: systemctl restart docker
+    systemd:
+      state: started
+      name: docker
 
 - name: Verify NFS on support node.
   hosts: nfs
@@ -29,7 +27,10 @@
           - atomic-openshift-clients
           - openshift-ansible
         state: present
-       
+
+# Generate hosts file. 
+- import_playbook: generate_hosts.yaml
+
 - name: Execute the openshift-ansible prerequisites playbook
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
