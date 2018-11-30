@@ -1,0 +1,101 @@
+---
+- name: Create PVs for Users
+  hosts: nfs
+  tasks:
+    - name: Create PV directories
+      shell: mkdir -p /srv/nfs/user-vols/pv{1..200}
+    - name: Create all PV's
+      shell: >
+        for pvnum in {1..50}; do
+          echo /srv/nfs/user-vols/pv${pvnum} *(rw,root_squash) >> /etc/exports.d/openshift-uservols.exports
+          chown -R nfsnobody.nfsnobody /srv/nfs
+          chmod -R 777 /srv/nfs
+        done
+    - name: Restarting NFS Server...
+      shell: systemctl restart nfs-server
+
+- name: Create 25 definitions files for PVs 5G size
+  hosts: localhost
+  tasks:
+    - name: Creating PV definitions for 5GB
+      shell: |
+        export volsize="5Gi"
+        mkdir /root/pvs
+    - name: Loop it!
+      shell: >
+        for volume in pv{1..25} ; do
+          cat << EOF > /root/pvs/${volume}
+          {
+            "apiVersion": "v1",
+            "kind": "PersistentVolume",
+            "metadata": {
+              "name": "${volume}"
+            },
+            "spec": {
+              "capacity": {
+                  "storage": "${volsize}"
+              },
+              "accessModes": [ "ReadWriteOnce" ],
+              "nfs": {
+                  "path": "/srv/nfs/user-vols/${volume}",
+                  "server": "support1.${GUID}.internal"
+              },
+              "persistentVolumeReclaimPolicy": "Recycle"
+           }
+          }
+          EOF
+          echo "Created def file for ${volume}";
+        done;
+      args:
+        executable: /bin/bash
+- name: Create 25 definitions files for PVs 10G size
+  hosts: localhost
+  tasks:
+    - name: Create PV definitions for 10GB
+      shell: export volsize="10Gi"
+    - name: Loop it!
+      shell: >
+        for volume in pv{26..50} ; do
+          cat << EOF > /root/pvs/${volume}
+          {
+            "apiVersion": "v1",
+            "kind": "PersistentVolume",
+            "metadata": {
+              "name": "${volume}"
+            },
+            "spec": {
+              "capacity": {
+                  "storage": "${volsize}"
+              },
+              "accessModes": [ "ReadWriteMany" ],
+              "nfs": {
+                  "path": "/srv/nfs/user-vols/${volume}",
+                  "server": "support1.${GUID}.internal"
+              },
+              "persistentVolumeReclaimPolicy": "Recycle"
+           }
+          }
+          EOF
+          echo "Created def file for ${volume}";
+        done;
+      args:
+        executable: /bin/bash
+- name: Create all PVs from definitions files
+  shell: cat /root/pvs/* | oc create -f -
+- name: Fix NFS Persistent Volume Recycling
+  docker_image:
+    name: ose-recycler:latest
+    tag: v3.11.16
+    registry: registry.redhat.io/openshift3/
+    push: yes  
+# - name: Check container logs
+#     shell: |
+#       for i in {1..5}; do
+#          echo "webcontainer${i}"
+#          echo ""
+#          echo "#### ${i} ####"
+#          echo ""
+#          docker logs --tail 10 ${i}
+#       done
+#     args:
+#       executable: /bin/bash
