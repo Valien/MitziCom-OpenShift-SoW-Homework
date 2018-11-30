@@ -15,6 +15,7 @@
 
 - name: Verify NFS on support node.
   hosts: nfs
+  become: true
   tasks:
     - name: Checking NFS...
       shell: exportfs
