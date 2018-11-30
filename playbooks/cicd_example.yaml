@@ -4,7 +4,7 @@
   tasks:
     - name: Creating project...
       shell: |
-        oc login -u andrew -p r3dh4t1!
+        #oc login -u andrew -p r3dh4t1!
         oc new-project cicd-dev
         oc new-app jenkins-persistent
       register: ocresults
@@ -13,11 +13,6 @@
     - name: Pausing for 30 seconds so project can build. Then getting route.
       pause:
         seconds: 30
-    - name: Show PVC attached
-      shell: oc get pvc
-      register: pvcresults
-    - debug:
-        var: pvcresults.stdout
     - name: Displaying route. Copy this URL into your browser!
       shell: oc get route | awk 'NR>1 {print $2}'
       register: url

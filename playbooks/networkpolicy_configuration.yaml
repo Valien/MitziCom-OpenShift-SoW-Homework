@@ -1,0 +1,17 @@
+---
+- name: Configure NetworkPolicy defaults
+  hosts: localhost
+  tasks:
+    - name: OC login
+      shell: oc login -u system:admin
+    - name: Deny all policy!
+      shell: >
+        echo 'kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
+        metadata:
+          name: deny-by-default
+        spec:
+          podSelector:
+          ingress: []' >denyall.yaml
+      args:
+        executable: /bin/bash
