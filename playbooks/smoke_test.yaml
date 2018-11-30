@@ -6,3 +6,5 @@
       shell: | 
         oc new-project smoke-test
         oc new-app nodejs-mongo-persistent
+      register: ocresults
+    - debug: ocresults.stdout
