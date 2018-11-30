@@ -33,9 +33,14 @@
 # Generate hosts file. 
 - import_playbook: generate_hosts.yaml
 
+#- name: Creation of users for Alpha and Beta clients
+- import_playbook: create_users.yaml
+
+# Run the prerequisites
 - name: Execute the openshift-ansible prerequisites playbook
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
+# Deploy Openshift!
 - name: Execute the openshift-ansible Deployer
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 
@@ -48,7 +53,7 @@
         dest: /root/.kube/config
         flat: yes
 
-  # not displaying results. Check into this.      
+# not displaying results. Check into this.      
 - name: Post installation configuration
   hosts: localhost
   tasks:
@@ -63,15 +68,6 @@
 
 # CICD project
 - import_playbook: cicd_example.yaml
-
-# - name: HPA configuration on production deployment of openshift-tasks
-#   hosts: localhost
-#   tasks:
-
-#- name: Creation of users for Alpha and Beta clients
-- import_playbook: create_users.yaml
-
-# - name: Assigning labels to the users according to its group
 
 # - name: Setup the environment for Alpha and Beta clients
 - import_playbook: label_nodes.yaml
