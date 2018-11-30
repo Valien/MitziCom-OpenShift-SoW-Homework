@@ -26,7 +26,7 @@
       shell: 
         cmd: |
           for volume in pv{1..25} ; do
-            cat << EOF > /root/pvs/${volume}
+            cat <<EOF > /root/pvs/${volume}
             {
               "apiVersion": "v1",
               "kind": "PersistentVolume",
@@ -45,7 +45,7 @@
                 "persistentVolumeReclaimPolicy": "Recycle"
              }
             }
-            EOF
+          EOF
             echo "Created def file for ${volume}";
           done;
       args:
@@ -78,7 +78,7 @@
                 "persistentVolumeReclaimPolicy": "Recycle"
              }
             }
-            EOF
+          EOF
             echo "Created def file for ${volume}";
           done;
       args:
