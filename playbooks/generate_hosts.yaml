@@ -31,7 +31,7 @@
         regexp: 'GUID'
         replace: "{{ guid.stdout  }}"
         backup: yes
-    - name: Pausing for 5 seconds
-      pause:
-        seconds: 5
+    # - name: Pausing for 5 seconds
+    #   pause:
+    #     seconds: 5
       
