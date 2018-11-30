@@ -108,10 +108,6 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 # LDAP and HTPASSWD dependencies
 
-# create admin/r3dh4t1! user
-#openshift_master_htpasswd_users:
-#  admin: admin:$apr1$PdURZKAb$rKYbsqX1gwFl3jbQNpxwd.
-
 openshift_master_htpasswd_file=/root/htpasswd.openshift
 #openshift_master_ldap_ca_file=/root/ipa-ca.crt
 
@@ -183,7 +179,7 @@ openshift_logging_storage_kind=nfs
 openshift_logging_storage_access_modes=['ReadWriteOnce']
 openshift_logging_storage_nfs_directory=/srv/nfs
 openshift_logging_storage_nfs_options='*(rw,root_squash)'
-openshift_logging_storage_volume_name=loggins
+openshift_logging_storage_volume_name=logging
 openshift_logging_storage_volume_size=10Gi
 openshift_logging_storage_labels={'storage': 'logging'}
 openshift_logging_es_pvc_storage_class_name=''
