@@ -49,7 +49,7 @@ logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n
 oreg_url=registry.access.redhat.io/openshift3/ose-${component}:${version}
 #oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
 oreg_auth_user="{{ OREG_AUTH_USER }}"
-oreg_auth_password="{{ 'OREG_AUTH_PASSWORD }}"
+oreg_auth_password="{{ OREG_AUTH_PASSWORD }}"
 
 # For Operator Framework Images
 #openshift_additional_registry_credentials=
@@ -110,8 +110,8 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 # LDAP and HTPASSWD dependencies
 
 # create admin/r3dh4t1! user
-openshift_master_htpasswd_users:
-  admin: admin:$apr1$PdURZKAb$rKYbsqX1gwFl3jbQNpxwd.
+#openshift_master_htpasswd_users:
+#  admin: admin:$apr1$PdURZKAb$rKYbsqX1gwFl3jbQNpxwd.
 
 openshift_master_htpasswd_file=/root/htpasswd.openshift
 #openshift_master_ldap_ca_file=/root/ipa-ca.crt
