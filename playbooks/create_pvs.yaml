@@ -86,8 +86,11 @@
 - name: Create all PVs from definitions files
   hosts: localhost
   tasks:
-    - name: Creating...
-      shell: cat /root/pvs/* | oc create -f -
+    - name: Creating oc files...
+      shell:
+        cmd: cat /root/pvs/* | oc create -f -
+      args:
+        executable: /bin/bash
 
 # Don't think I need this for 3.11.16 so commenting out.
 # - name: Fix NFS Persistent Volume Recycling
