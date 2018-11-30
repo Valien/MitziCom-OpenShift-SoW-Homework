@@ -46,8 +46,7 @@ logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n
 ### OpenShift Registries Locations
 ###########################################################################
 
-oreg_url=registry.access.redhat.io/openshift3/ose-${component}:${version}
-#oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
 oreg_auth_user="{{ OREG_AUTH_USER }}"
 oreg_auth_password="{{ OREG_AUTH_PASSWORD }}"
 
