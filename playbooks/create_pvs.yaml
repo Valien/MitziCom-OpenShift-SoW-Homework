@@ -13,7 +13,6 @@
         done
     - name: Restarting NFS Server...
       shell: systemctl restart nfs-server
-
 - name: Create 25 definitions files for PVs 5G size
   hosts: localhost
   tasks:
@@ -83,7 +82,8 @@
 - name: Create all PVs from definitions files
   hosts: localhost
   tasks:
-    shell: cat /root/pvs/* | oc create -f -
+    - name: Creating...
+      shell: cat /root/pvs/* | oc create -f -
 
 # Don't think I need this for 3.11.16 so commenting out.
 # - name: Fix NFS Persistent Volume Recycling
