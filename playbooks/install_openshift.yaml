@@ -33,6 +33,9 @@
 # Generate hosts file. 
 - import_playbook: generate_hosts.yaml
 
+- name: Refreshing inventory to pull copied data
+  meta: refresh-inventory
+  
 - name: Execute the openshift-ansible prerequisites playbook
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
