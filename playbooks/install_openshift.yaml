@@ -52,13 +52,14 @@
 - name: Post installation configuration
   hosts: localhost
   tasks:
-    - name: make sure you are system:admin
+    - name: Make sure you are system:admin
       shell: oc whoami | grep system:admin
 
 # Creating PVs
 - import_playbook: create_pvs.yaml
 
 # - name: Smoke Test
+- import_playbook: smoke_test.yaml
 
 # - name: Jenkins Setup
 #   hosts: localhost

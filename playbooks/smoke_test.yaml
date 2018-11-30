@@ -1,0 +1,8 @@
+---
+- name: Creating smoke test project
+  hosts: localhost
+  tasks:
+    - name: Creating project...
+      shell: | 
+        oc new-project smoke-test
+        oc new-app nodejs-mongo-persistent
