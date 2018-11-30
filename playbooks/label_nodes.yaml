@@ -5,10 +5,14 @@
     - name: Get current GUID
       shell: hostname|awk -F. '{print $2}'
       register: guid
-    - name: Label Alpha and Beta nodes
+    - name: Label Alpha and Beta nodes and users
       shell: |
         oc login -u system:admin
         oc label node node1.{{ guid.stdout  }}.internal "client=alpha"
         oc label node node2.{{ guid.stdout }}.internal "client=beta"
         oc label node node3.{{ guid.stdout }}.internal "client=common"
         oc label node node4.{{ guid.stdout }}.internal "client=common"
+        oc label user andrew "client=alpha"
+        oc label user amy "client=alpha"
+        oc label user brian "client=beta"
+        oc label user betty "client=beta"
