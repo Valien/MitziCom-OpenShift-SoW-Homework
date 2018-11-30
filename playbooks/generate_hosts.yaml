@@ -33,8 +33,3 @@
         backup: yes  
     - name: Refreshing inventory to pull copied data
       meta: refresh_inventory
-  
-    # - name: Pausing for 5 seconds
-    #   pause:
-    #     seconds: 5
-      
