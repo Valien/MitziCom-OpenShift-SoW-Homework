@@ -112,7 +112,7 @@ openshift_master_identity_providers: [{'name': 'htpasswd_auth', 'login': 'true',
 openshift_master_htpasswd_users:
   admin: admin:$apr1$PdURZKAb$rKYbsqX1gwFl3jbQNpxwd.
 
-openshift_master_htpasswd_file:/root/htpasswd.openshift
+openshift_master_htpasswd_file: /root/htpasswd.openshift
 #openshift_master_ldap_ca_file=/root/ipa-ca.crt
 
 
