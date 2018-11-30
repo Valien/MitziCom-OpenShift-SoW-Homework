@@ -85,6 +85,7 @@
   tasks:
     shell: cat /root/pvs/* | oc create -f -
 - name: Fix NFS Persistent Volume Recycling
+  hosts: localhost
   docker_image:
     name: ose-recycler:latest
     tag: v3.11.16
