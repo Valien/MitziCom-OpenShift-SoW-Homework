@@ -7,4 +7,18 @@
         oc new-project smoke-test
         oc new-app nodejs-mongo-persistent
       register: ocresults
-    - debug: ocresults.stdout
+    - debug: 
+        var: ocresults.stdout
+    - name: Pausing for 30 seconds so project can build. Then getting route.
+      pause:
+        seconds: 30
+    - name: Show PVC attached
+      shell: oc get pvc
+      register: pvcresults
+    - debug:
+        var: pvcresults.stdout
+    - name: Displaying route. Copy this URL into your browser!
+      shell: oc get route | awk 'NR>1 {print $2}'
+      register: url
+    - debug:
+        var: url.stdout
