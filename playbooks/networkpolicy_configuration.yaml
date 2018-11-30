@@ -4,14 +4,29 @@
   tasks:
     - name: OC login
       shell: oc login -u system:admin
-    - name: Deny all policy!
-      shell: >
-        echo 'kind: NetworkPolicy
-        apiVersion: networking.k8s.io/v1
-        metadata:
-          name: deny-by-default
-        spec:
-          podSelector:
-          ingress: []' >denyall.yaml
-      args:
-        executable: /bin/bash
+    - name: Create deny-by-default policy
+      shell:
+        cmd: |
+          echo 'kind: NetworkPolicy
+          apiVersion: networking.k8s.io/v1
+          metadata:
+            name: deny-by-default
+          spec:
+            podSelector:
+            ingress: []' > deny-by-default.yaml
+    - name: Create allow-same-namespace policy
+      shell:
+        cmd: |
+          echo 'kind: NetworkPolicy
+          apiVersion: networking.k8s.io/v1
+          metadata:
+            name: allow-same-namespace
+          spec:
+            podSelector:
+            ingress:
+            - from:
+              - podSelector: {}' > allow-from-namespace.yaml
+    - name: Apply policies
+      shell: |
+        oc create -f deny-by-default.yaml
+        oc create -f allow-from-namespace.yaml
