@@ -1,1 +1,0 @@
-Follow the instructions in this readme in order to install the OpenShift PoC in your environment.

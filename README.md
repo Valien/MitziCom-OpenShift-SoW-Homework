@@ -1,30 +1,13 @@
 # MitziCom-OpenShift-SoW-Homework
 Homework for the OpenShift Deployment Labs
 
-Full homework instructions are [here](https://www.opentlc.com/labs/ocp_advanced_deployment/08_1_Assignment_Lab.html).
+Follow the steps below to start the OpenShift 3.11.16 POC installation:
 
-This is leveraging the casl-ansible project: https://github.com/redhat-cop/casl-ansible
+1.	Clone this repo -  `git clone https://github.com/Valien/MitziCom-OpenShift-SoW-Homework.git`
+2.	CD to the directory – `cd MitziCom-OpenShift-SoW-Homework/`
+3.	CD to the playbooks directory – `cd playbooks/`
+4.	Run the following command: `ansible-playbook -f 20 install_openshift.yaml --extra-vars "OREG_AUTH_USER=<INSERT RH USER> OREG_AUTH_PASSWORD=<INSERT RH PASSWORD"`
+ 
+ ** You will need to put in your Red Hat username and password.
 
-* Engagement journal in .pdf format (F8F logos, SoW template, etc).
-* Different PV types
-* Default project templates - deny-by-default, then allowed... (isolated, etc.)
-* Multi-tenancy - node-selectors, user objects, client objects (check docs) -- new user template (extra credit?!?)
-
-** To Run **
-
-* ssh to bastion host
-* git clone
-* `ansible -i $PWD/hosts masters --list-hosts` -- checks hosts file
-* `ansible -i $PWD/hosts nodes --list-hosts` -- checks nodes
-* `ansible -i $PWD/hosts all --list-hosts` -- all nodes/hosts
-* `ansible -i $PWD/hosts all -m ping` -- ping all hosts
-
-Export bastion guid:
-
-* `export GUID=`hostname | cut -d"." -f2`; echo "export GUID=$GUID" >> $HOME/.bashrc`
-* `echo GUID=$GUID`
-
-~~~
-
-1. `ansible-playbook install_galaxy.yml`
-2. `ansible-playbook -f 20 playbooks/install_openshift.yml`
+5.	The installation takes about 30 minutes. 
