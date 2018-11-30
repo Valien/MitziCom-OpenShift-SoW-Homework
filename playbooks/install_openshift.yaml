@@ -58,8 +58,11 @@
 # Creating PVs
 - import_playbook: create_pvs.yaml
 
-# - name: Smoke Test
+# Smoke Test project
 - import_playbook: smoke_test.yaml
+
+# CICD project - using as https://github.com/redhat-cop/container-pipelines/tree/master/basic-spring-boot as the example
+- import_playbook: cicd_example.yaml
 
 # - name: Jenkins Setup
 #   hosts: localhost

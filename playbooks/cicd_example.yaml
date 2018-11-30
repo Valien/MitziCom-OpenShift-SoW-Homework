@@ -1,12 +1,12 @@
 ---
-- name: Creating smoke test project
+- name: Creating CICD Example project
   hosts: localhost
   tasks:
     - name: Creating project...
       shell: |
         oc login -u andrew -p r3dh4t1!
-        oc new-project smoke-test
-        oc new-app nodejs-mongo-persistent
+        oc new-project cicd-dev
+        oc new-app jenkins-persistent
       register: ocresults
     - debug: 
         var: ocresults.stdout
