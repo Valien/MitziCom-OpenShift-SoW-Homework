@@ -20,8 +20,10 @@
   tasks:
     - name: Creating PV definitions for 5GB
       shell: |
-        export volsize="5Gi"
+        export $VOLSIZE5G
         mkdir /root/pvs
+      environment:
+        VOLSIZE5G: volsize="5Gi"
     - name: Loop it!
       shell: 
         cmd: |
@@ -54,7 +56,9 @@
   hosts: localhost
   tasks:
     - name: Create PV definitions for 10GB
-      shell: export volsize="10Gi"
+      shell: export $VOLSIZE10G
+      environment:
+        VOLSIZE10G: volsize="10Gi"
     - name: Loop it!
       shell: 
         cmd: |
