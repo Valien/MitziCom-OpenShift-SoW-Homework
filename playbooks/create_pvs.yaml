@@ -5,12 +5,14 @@
     - name: Create PV directories
       shell: mkdir -p /srv/nfs/user-vols/pv{1..200}
     - name: Create all PV's
-      shell: |
+      shell: >
         for pvnum in {1..50}; do
           echo /srv/nfs/user-vols/pv${pvnum} *(rw,root_squash) >> /etc/exports.d/openshift-uservols.exports
           chown -R nfsnobody.nfsnobody /srv/nfs
           chmod -R 777 /srv/nfs
         done
+      args:
+        executable: /bin/bash
     - name: Restarting NFS Server...
       shell: systemctl restart nfs-server
 - name: Create 25 definitions files for PVs 5G size
@@ -21,7 +23,7 @@
         export volsize="5Gi"
         mkdir /root/pvs
     - name: Loop it!
-      shell: |
+      shell: >
         for volume in pv{1..25} ; do
           cat << EOF > /root/pvs/${volume}
           {
@@ -53,7 +55,7 @@
     - name: Create PV definitions for 10GB
       shell: export volsize="10Gi"
     - name: Loop it!
-      shell: |
+      shell: >
         for volume in pv{26..50} ; do
           cat << EOF > /root/pvs/${volume}
           {
