@@ -81,7 +81,9 @@
       args:
         executable: /bin/bash
 - name: Create all PVs from definitions files
-  shell: cat /root/pvs/* | oc create -f -
+  hosts: localhost
+  tasks:
+    shell: cat /root/pvs/* | oc create -f -
 - name: Fix NFS Persistent Volume Recycling
   docker_image:
     name: ose-recycler:latest
