@@ -69,5 +69,5 @@
 # CICD project
 - import_playbook: cicd_example.yaml
 
-# - name: Setup the environment for Alpha and Beta clients
+# Setup the environment for Alpha and Beta clients
 - import_playbook: label_nodes.yaml
