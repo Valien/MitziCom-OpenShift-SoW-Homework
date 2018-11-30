@@ -19,11 +19,7 @@
   hosts: localhost
   tasks:
     - name: Creating PV definitions for 5GB
-      shell: |
-        export $VOLSIZE5G
-        mkdir /root/pvs
-      environment:
-        VOLSIZE5G: volsize="5Gi"
+      shell: mkdir /root/pvs
     - name: Loop it!
       shell: 
         cmd: |
@@ -37,7 +33,7 @@
               },
               "spec": {
                 "capacity": {
-                    "storage": "${volsize}"
+                    "storage": "5Gi"
                 },
                 "accessModes": [ "ReadWriteOnce" ],
                 "nfs": {
@@ -56,10 +52,6 @@
   hosts: localhost
   tasks:
     - name: Create PV definitions for 10GB
-      shell: export $VOLSIZE10G
-      environment:
-        VOLSIZE10G: volsize="10Gi"
-    - name: Loop it!
       shell: 
         cmd: |
           for volume in pv{26..50} ; do
@@ -72,7 +64,7 @@
               },
               "spec": {
                 "capacity": {
-                    "storage": "${volsize}"
+                    "storage": "10Gi"
                 },
                 "accessModes": [ "ReadWriteMany" ],
                 "nfs": {
