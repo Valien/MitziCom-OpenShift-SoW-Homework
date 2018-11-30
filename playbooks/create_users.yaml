@@ -1,0 +1,12 @@
+---
+- name: Create users for Alpha and Beta clients
+  hosts: master
+  tasks:
+    - name: Create Alpha users - Andrew and Amy
+      shell: |
+        echo 'amy:$apr1$Baklkalq$YPCvmm7BtxTR2RdMz2Trn1' >> /root/htpasswd.openshift
+        echo 'andrew:$apr1$dZPb2ECf$ercevOFO5znrynUfUj4tb/' >> /root/htpasswd.openshift
+    - name: Create Beta Corp users - Brian and Betty
+      shell: |
+        echo 'brian:$apr1$8qhYe9.b$kpQVaIs5cVUzZ7bVyxJ/M.' >> /root/htpasswd.openshift
+        echo 'betty:$apr1$DyRanbnr$ZC1RhSjFEhHOEuUAds91C/' >> /root/htpasswd.openshift

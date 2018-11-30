@@ -1,0 +1,9 @@
+---
+- name: Label nodes - Alpha and Beta
+  hosts: master
+  tasks:
+    - name: Label Alpha and Beta nodes
+      shell: |
+        oc label node node1.{{ guid.stdout  }}.internal "client=alpha"
+        oc label node node2.{{ guid.stdout }}.internal "client=beta"
+        oc label node node[3.4].{{ guid.stdout }}.internal "client=common"
